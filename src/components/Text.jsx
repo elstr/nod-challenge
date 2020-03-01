@@ -18,6 +18,7 @@ const Text = ({ reset, field, handleBlur }) => {
     isValidate ? setError(false) : setError(true);
   };
 
+
   return (
     <div>
       <ReactTooltip />
@@ -28,7 +29,7 @@ const Text = ({ reset, field, handleBlur }) => {
           type={INPUTS[type].inputType}
           value={value}
           onChange={e => verify(e.target.value)}
-          onBlur={e => console.log(e.target.value)}
+          onBlur={() =>  handleBlur({ name, value, error })}
         />
       </div>
 

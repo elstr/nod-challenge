@@ -10,6 +10,23 @@ const DropDown = ({ reset, field, handleChange }) => {
     if(reset) setOptions([])
    }, [reset])
 
+  useEffect(() => {
+    const selectedValues = selectedOptions.length
+      ? selectedOptions.map(option => option.value)
+      : [];
+
+    // If it's not multiple and no value was selected we default one onBlur
+    const error = isMultiple && selectedValues.length === 0;
+
+    handleChange({ name, selectedValues, error });
+  }, [selectedOptions]);
+  
+  const handleBlur = options => {
+    // Default selected option if none is picked in single dropdown
+    if (!isMultiple && selectedOptions.length === 0) { 
+      setOptions([options[0]])
+    }
+  }
 
   return (
     <div>
@@ -19,6 +36,8 @@ const DropDown = ({ reset, field, handleChange }) => {
         <select
           name={`dropdown-${type}`}
           multiple={isMultiple}
+          onBlur={({ target }) => handleBlur(target.selectedOptions)}
+          onChange={({ target }) => setOptions([...target.selectedOptions])}
         >
           {Object.keys(options).map((key, i) => {
             const option = options[key];
