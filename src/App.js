@@ -4,7 +4,7 @@ import "./App.css";
 import dataBase from "./database.json";
 
 import { Text, DropDown, ProgressBar } from "./components";
-import {PROGRESS_AMOUNT_PER_FIELD} from "./utils/constants"
+import { PROGRESS_AMOUNT_PER_FIELD } from "./utils/constants";
 
 // TODO: Move this to useEffect onMount
 // iterate dataBase and add error to each object
@@ -32,7 +32,6 @@ const App = () => {
 
     const hasError = errors.includes(true);
     setError(hasError);
-
   }, [fields]);
 
   const saveValue = field => {
@@ -61,29 +60,31 @@ const App = () => {
   return (
     <div className="App">
       <ProgressBar percentage={progress} />
-      {dataBase.map((field, index) => {
-        switch (field.type) {
-          case "dropdown":
-          case "multi-select":
-            return (
-              <DropDown
-                handleChange={value => saveValue(value)}
-                key={`field-${index}`}
-                field={field}
-                reset={reset}
-              />
-            );
-          default:
-            return (
-              <Text
-                handleBlur={value => saveValue(value)}
-                key={`field-${index}`}
-                field={field}
-                reset={reset}
-              />
-            );
-        }
-      })}
+      <div className="form">
+        {dataBase.map((field, index) => {
+          switch (field.type) {
+            case "dropdown":
+            case "multi-select":
+              return (
+                <DropDown
+                  handleChange={value => saveValue(value)}
+                  key={`field-${index}`}
+                  field={field}
+                  reset={reset}
+                />
+              );
+            default:
+              return (
+                <Text
+                  handleBlur={value => saveValue(value)}
+                  key={`field-${index}`}
+                  field={field}
+                  reset={reset}
+                />
+              );
+          }
+        })}
+      </div>
 
       <button onClick={() => saveToCSV()} disabled={error}>
         Submit

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 
-import { INPUTS } from "../utils/constants";
+import { INPUTS } from "../../utils/constants";
+
+import "./styles.css";
 
 const Text = ({ reset, field, handleBlur }) => {
   const { name, type, description } = field;
@@ -26,11 +28,12 @@ const Text = ({ reset, field, handleBlur }) => {
   };
 
   return (
-    <div>
+    <div className="container">
       <ReactTooltip />
       <div data-tip={description && description}>
         <label htmlFor={`input-${name}`}>{`${name}: `}</label>
         <input
+          style={{ fontSize: "18px", width: "300px" }}
           name={`input-${name}`}
           type={INPUTS[type].inputType}
           value={value}
@@ -38,11 +41,10 @@ const Text = ({ reset, field, handleBlur }) => {
           onChange={e => verify(e.target.value)}
         />
       </div>
-
       {error && (
-        <span>
+        <p>
           {INPUTS[type].errorMessage || `Oops.. there's an error in this field`}
-        </span>
+        </p>
       )}
     </div>
   );
