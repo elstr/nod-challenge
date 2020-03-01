@@ -1,3 +1,9 @@
+## Instalation
+Execute the following commands:
+1. `npm install`
+2. `npm run start`
+
+## Goals
 - Using the provided JSON database ‘database.json’, display the 8 form elements on a page with relevant input fields based on the form element type
 - If the form element contains a description, the description should show via a tooltip when hovered over
 - Each form element should be validated upon data entry and if not the correct format, should show a relevant error message
