@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 
+import { INPUTS } from "../utils/constants";
 
 const Text = ({ reset, field, handleBlur }) => {
   const { name, type, description } = field;
@@ -11,6 +12,12 @@ const Text = ({ reset, field, handleBlur }) => {
     if (reset) setValue("");
   }, [reset]);
 
+  const verify = value => {
+    const isValidate = value !== "" ? INPUTS[type].validation(value) : false;
+    setValue(value);
+    isValidate ? setError(false) : setError(true);
+  };
+
   return (
     <div>
       <ReactTooltip />
@@ -18,16 +25,16 @@ const Text = ({ reset, field, handleBlur }) => {
         <label htmlFor={`input-${name}`}>{`${name}: `}</label>
         <input
           name={`input-${name}`}
-          type="text"
+          type={INPUTS[type].inputType}
           value={value}
-          onChange={e => console.log(e.target.value)}
+          onChange={e => verify(e.target.value)}
           onBlur={e => console.log(e.target.value)}
         />
       </div>
 
       {error && (
         <span>
-          Oops.. there's an error in this field
+          {INPUTS[type].errorMessage || `Oops.. there's an error in this field`}
         </span>
       )}
     </div>
