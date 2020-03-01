@@ -43,9 +43,20 @@ const App = () => {
   };
 
   const saveToCSV = () => {
-    console.log("save csv")
-    setFormReset(true)
-  }
+    var data = Object.values(fields).map(f => JSON.stringify(f));
+    var link = window.document.createElement("a");
+    link.setAttribute(
+      "href",
+      "data:text/csv;charset=utf-8,%EF%BB%BF" + encodeURI(data)
+    );
+    link.setAttribute("download", "submission.csv");
+    link.click();
+
+    // Reset form values
+    setFields(INITIAL_STATE);
+    setFormReset(true);
+    setProgress(0);
+  };
 
   return (
     <div className="App">
