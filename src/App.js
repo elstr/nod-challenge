@@ -3,7 +3,8 @@ import "./App.css";
 
 import dataBase from "./database.json";
 
-import { Text, DropDown } from "./components";
+import { Text, DropDown, ProgressBar } from "./components";
+import {PROGRESS_AMOUNT_PER_FIELD} from "./utils/constants"
 
 // TODO: Move this to useEffect onMount
 // iterate dataBase and add error to each object
@@ -21,11 +22,17 @@ const INITIAL_STATE = {
 const App = () => {
   const [fields, setFields] = useState(INITIAL_STATE);
   const [error, setError] = useState(true);
+  const [progress, setProgress] = useState(0);
   const [reset, setFormReset] = useState(false);
 
   useEffect(() => {
-    const hasError = Object.values(fields).map(f => f.error).includes(true);
-    hasError ? setError(true) : setError(false);
+    const errors = Object.values(fields).map(f => f.error);
+    const correctFields = errors.filter(e => e === false).length;
+    setProgress(PROGRESS_AMOUNT_PER_FIELD * correctFields);
+
+    const hasError = errors.includes(true);
+    setError(hasError);
+
   }, [fields]);
 
   const saveValue = field => {
@@ -42,6 +49,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <ProgressBar percentage={progress} />
       {dataBase.map((field, index) => {
         switch (field.type) {
           case "dropdown":
