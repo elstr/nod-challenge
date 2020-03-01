@@ -18,6 +18,12 @@ const Text = ({ reset, field, handleBlur }) => {
     isValidate ? setError(false) : setError(true);
   };
 
+  const onBlur = () => {
+    // Check if user only passed by the field so we don't update progress
+    // otherwise it's a false positive
+    const hasValue = !error && value.trim() !== "";
+    handleBlur({ name, value, error: !hasValue });
+  };
 
   return (
     <div>
@@ -28,8 +34,8 @@ const Text = ({ reset, field, handleBlur }) => {
           name={`input-${name}`}
           type={INPUTS[type].inputType}
           value={value}
+          onBlur={() => onBlur()}
           onChange={e => verify(e.target.value)}
-          onBlur={() =>  handleBlur({ name, value, error })}
         />
       </div>
 
